@@ -1,0 +1,1 @@
+DBIx::Class::ResultSet::next(): DBI Connection failed: Can't connect to data source '' because I can't work out what driver to use (it doesn't seem to contain a 'dbi:driver:' prefix and the DBI_DRIVER env var is not set) at /home/lick/perl5/lib/perl5/DBIx/Class/Storage/DBI.pm line 1387. at /home/lick/perl/simple-job-manager/monitor.pl line 23

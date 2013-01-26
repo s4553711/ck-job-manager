@@ -1,0 +1,5 @@
+---
+dsn: "dbi:mysql:database=ck_job;host=127.0.0.1"
+user: "user"
+pass: "pass"
+---
