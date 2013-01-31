@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-use lib '/home/lick/perl/simple-job-manager';
+use lib "$ENV{CKJOB_BASE}";
 use YAML::Tiny;
 use CKWorker;
 

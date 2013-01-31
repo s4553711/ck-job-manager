@@ -16,7 +16,11 @@ sub work {
 	my ($class) = shift;
 	my ($setting) = shift;
 	
+	open STDERR, '>&', $setting->{log_err_handle};
+	select $setting->{log_handle}; $| = 1;
+
 	sleep(10);
+	print "This is STDOUT in woker\n";
 }
 
 1;
