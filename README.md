@@ -4,21 +4,23 @@ A simple job management built on perl
 ## Install
 1. Set database info in **db.yaml**
 2. Set the folder of this project
-```
-export CKJOB_BASE="/home/lick/perl/simple-job-manager"
-```
+
+	```bash
+	export CKJOB_BASE="/home/lick/perl/simple-job-manager"
+	```
 3. Setup table in MYSQL
-```sql
-CREATE TABLE IF NOT EXISTS `job` (
-  `jobid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
-  `pid` bigint(10) unsigned NOT NULL,
-  `insert_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY `jobid` (`jobid`),
-  KEY `pid` (`pid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
-```
+
+	```sql
+	CREATE TABLE IF NOT EXISTS `job` (
+	  `jobid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+	  `name` varchar(20) NOT NULL,
+	  `status` tinyint(4) NOT NULL DEFAULT '1',
+	  `pid` bigint(10) unsigned NOT NULL,
+	  `insert_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	  KEY `jobid` (`jobid`),
+	  KEY `pid` (`pid`)
+	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+	```
 4. Finish
 
 ## Setup daemon
