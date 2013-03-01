@@ -25,7 +25,7 @@ while(1){
 		my $job_status = find_job_status($job->pid);
 
 		if ($job_status == 0){
-			$job->set_column('status',2);
+			$job->set_column('status',3);
 			$job->update;
 		}
 	}
