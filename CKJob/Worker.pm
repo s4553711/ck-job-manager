@@ -6,6 +6,7 @@ use Data::Dumper;
 use JobDB::CKJob;
 use YAML::Tiny;
 use POSIX;
+use Capture::Tiny 'capture_merged';
 
 sub new {
 	my ($class,$set) = @_;
@@ -47,11 +48,15 @@ sub init {
 
 		open my $fh, '>', $setting->{output_path}."/execution.log";
 		open my $fh2, '>', $setting->{output_path}."/err.log";
+		open my $child_ot,">", $setting->{output_path}."/stdout.log";
+
 		$setting->{log_handle} = $fh;
 		$setting->{log_err_handle} = $fh2;
 
-		eval {
-			$self->work($setting);
+		print $child_ot capture_merged {
+			eval {
+				$self->work($setting);
+			};
 		};
 
 		# Error Handle
@@ -63,6 +68,7 @@ sub init {
 
 		close $fh;
 		close $fh2;
+		close $child_ot;
 		select STDOUT;
 
 		exit 0;
