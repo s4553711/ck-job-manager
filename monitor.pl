@@ -33,7 +33,7 @@ while(1){
 	sub find_job_status {
 		my ($pid) = @_;
 	
-		my $return = `ps aux |grep '\s$pid\s' |grep -v grep`;
+		my $return = `ps aux |grep ' $pid ' |grep -v grep`;
 	
 		return  length($return) >= 1 ? 1 : 0;
 	}

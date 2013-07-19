@@ -32,46 +32,53 @@ sub init {
 	
 	$self->{jobid} = $pid;
 
-	if ($pid == 0) {
+	if (defined $pid && $pid == 0) {
+		umask 0;
+		die "Cannot detach from controlling terminal" if POSIX::setsid() < 0;
 
-		# Child Process
-		$self->{schema}->resultset('Job')->create(
-			{
-				name => $setting->{name},
-				pid => $$,
-				status => 1
-			}
-		)->update;
+		$pid = fork();
+		if ( defined $pid && $pid == 0 ) {
+			# Child Process
+			$self->{schema}->resultset('Job')->create(
+				{
+					name => $setting->{name},
+					pid => $$,
+					status => 1
+				}
+			)->update;
 
-		$setting->{output_path} = $self->{sys_path}."/$$";
-		mkdir $setting->{output_path},0777;
+			$setting->{output_path} = $self->{sys_path}."/$$";
+			mkdir $setting->{output_path},0777;
 
-		open my $fh, '>', $setting->{output_path}."/execution.log";
-		open my $fh2, '>', $setting->{output_path}."/err.log";
-		open my $child_ot,">", $setting->{output_path}."/stdout.log";
+			open my $fh, '>', $setting->{output_path}."/execution.log";
+			open my $fh2, '>', $setting->{output_path}."/err.log";
+			open my $child_ot,">", $setting->{output_path}."/stdout.log";
 
-		$setting->{log_handle} = $fh;
-		$setting->{log_err_handle} = $fh2;
+			$setting->{log_handle} = $fh;
+			$setting->{log_err_handle} = $fh2;
 
-		print $child_ot capture_merged {
-			eval {
-				$self->work($setting);
+			print $child_ot capture_merged {
+				eval {
+					$self->work($setting);
+				};
 			};
-		};
 
-		# Error Handle
-		if ($@){
-			open(EXCEPTION,">$setting->{output_path}/error.log");
-			print EXCEPTION "$@";
-			close EXCEPTION;
+			# Error Handle
+			if ($@){
+				open(EXCEPTION,">$setting->{output_path}/error.log");
+				print EXCEPTION "$@";
+				close EXCEPTION;
+			}
+
+			close $fh;
+			close $fh2;
+			close $child_ot;
+			select STDOUT;
+
+			exit 1;
+		} else {
+			exit 0;
 		}
-
-		close $fh;
-		close $fh2;
-		close $child_ot;
-		select STDOUT;
-
-		exit 0;
 	}
 
 	return 0;
