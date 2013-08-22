@@ -1,13 +1,26 @@
 #simple-job-manager
 A simple job management built on perl
 
+## Prepare
+Make sure you have installed module listed below:
+1. local::lib
+2. DBIx::Class
+3. Proc::Daemon
+
 ## Install
 1. Set database info in **db.yaml**
-2. Set the folder of this project
+2. Set the folder of this project and enviromental variables
 
 	```bash
 	export CKJOB_BASE="/home/lick/perl/simple-job-manager"
+    export PERL5LIB=$PERL5LIB:$CKJOB_BASE
 	```
+
+    Apply the chages
+    ```bash
+    source ~/.bashrc
+    ```
+
 3. Setup table in MYSQL
 
 	```sql
